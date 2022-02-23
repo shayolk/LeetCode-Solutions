@@ -23,6 +23,7 @@ public:
     }
     
     int top() {
+        if(empty()) return -1;
         return q.front();
     }
     
