@@ -16,6 +16,7 @@ public:
     }
     
     int pop() {
+        if(empty()) return -1;
         int top=q.front();
         q.pop();
         return top;
