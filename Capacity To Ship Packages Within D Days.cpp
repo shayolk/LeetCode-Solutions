@@ -1,13 +1,11 @@
 class Solution {
     bool check(vector<int>& weights, int days, int per) {
-        int need=1, each=weights[0], n=weights.size();
-        for(int i=1; i<n; ++i) {
-            if(each+weights[i]<=per) {
-                each+=weights[i];
-            }
-            else {
+        int need=1, each=0;
+        for(int w: weights) {
+            each+=w;
+            if(each>per) {
                 ++need;
-                each=weights[i];
+                each=w;
             }
         }
         return need<=days;
