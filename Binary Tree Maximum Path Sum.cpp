@@ -10,18 +10,17 @@
  * };
  */
 class Solution {
-    int ans;
-    int dfs(TreeNode* t) {
-        if(!t)
-            return 0;
-        int l = dfs(t->left), r = dfs(t->right);
-        ans = max(ans, t->val+l+r);
-        return max(0,t->val+max(l,r));
+    const int INF=1e9+5;
+    
+    pair<int,int> find(TreeNode* root) {
+        if(!root) return {-INF, 0};
+        pair<int,int> l=find(root->left), r=find(root->right);
+        int ans=max({l.first, r.first, l.second+root->val+r.second});
+        int sum=max(0, root->val+max(l.second, r.second));
+        return {ans, sum};
     }
 public:
     int maxPathSum(TreeNode* root) {
-        ans = INT_MIN;
-        dfs(root);
-        return ans;
+        return find(root).first;
     }
 };
