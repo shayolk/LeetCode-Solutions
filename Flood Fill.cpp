@@ -1,25 +1,32 @@
 class Solution {
-    int n, m, newCol;
-    pair<int,int> dir[4] = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-    set<pair<int,int>> done;
-    bool check(int row, int col) {
-        return row >= 0 and row < n and col >=0 and col < m;
+    int n, m, color, newColor;
+    vector<vector<bool>> vis;
+    
+    const int dr[4]={0, 0, 1, -1};
+    const int dc[4]={1, -1, 0, 0};
+    
+    bool safe(int r, int c, vector<vector<int>>& image) {
+        return r>=0 && r<n && c>=0 && c<m && !vis[r][c] && image[r][c]==color;
     }
-    void dfs(vector<vector<int>>& image, int row, int col, int color) {
-        image[row][col] = newCol;
-        for(int i = 0; i < 4; ++i) {
-            if(check(row + dir[i].first, col + dir[i].second) && image[row + dir[i].first][col + dir[i].second] == color && done.find({row + dir[i].first, col + dir[i].second}) == done.end()) {
-                done.insert({row + dir[i].first, col + dir[i].second});
-                dfs(image, row + dir[i].first, col + dir[i].second, color);
-            }
+    
+    void dfs(int r, int c, vector<vector<int>>& image) {
+        vis[r][c]=true;
+        image[r][c]=newColor;
+        for(int d=0; d<4; ++d) {
+            int rr=r+dr[d], cc=c+dc[d];
+            if(!safe(rr, cc, image)) continue;
+            dfs(rr, cc, image);
         }
     }
+    
 public:
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
-        n = image.size();
-        m = image[0].size();
-        newCol = newColor;
-        dfs(image, sr, sc, image[sr][sc]);
+        n=image.size();
+        m=image[0].size();
+        color=image[sr][sc];
+        this->newColor=newColor;
+        vis.resize(n, vector<bool> (m));
+        dfs(sr, sc, image);
         return image;
     }
 };
