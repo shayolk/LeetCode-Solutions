@@ -1,20 +1,21 @@
 class Solution {
-    map<char,char> par={
-        {')', '('},
-        {'}', '{'},
-        {']', '['}
-    };
-    
+    map<char,char> mp;
+
 public:
+    Solution() {
+        mp[')'] = '(';
+        mp['}'] = '{';
+        mp[']'] = '[';
+    }
+
     bool isValid(string s) {
         stack<char> st;
         for(char c: s) {
-            if(!par.count(c)) {
-                st.push(c);
+            if(!st.empty() && st.top() == mp[c]) {
+                st.pop();
             }
             else {
-                if(st.empty() || st.top()!=par[c]) return false;
-                st.pop();
+                st.push(c);
             }
         }
         return st.empty();
