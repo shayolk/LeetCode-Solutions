@@ -1,27 +1,26 @@
 class Solution {
 public:
     vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-        int n=nums2.size();
-        vector<int> great(n);
+        int m = nums1.size();
+        map<int,int> pos;
+        for(int i=0; i<m; ++i) {
+            pos[nums1[i]] = i;
+        }
+        vector<int> ans(m, -1);
+        int n = nums2.size();
+        vector<int> nge(n, -1);
         stack<int> s;
-        for(int i=0; i<n; ++i) {
-            while(!s.empty() && nums2[s.top()]<nums2[i]) {
-                great[s.top()]=nums2[i];
+        for(int i=n-1; i>=0; --i) {
+            while(!s.empty() && s.top() <= nums2[i]) {
                 s.pop();
             }
-            s.push(i);
-        }
-        while(!s.empty()) {
-            great[s.top()]=-1;
-            s.pop();
-        }
-        map<int,int> mp;
-        for(int i=0; i<n; ++i) {
-            mp[nums2[i]]=i;
-        }
-        vector<int> ans;
-        for(int i: nums1) {
-            ans.push_back(great[mp[i]]);
+            if(!s.empty()) {
+                nge[i] = s.top();
+            }
+            s.push(nums2[i]);
+            if(pos.count(nums2[i])) {
+                ans[pos[nums2[i]]] = nge[i];
+            }
         }
         return ans;
     }
