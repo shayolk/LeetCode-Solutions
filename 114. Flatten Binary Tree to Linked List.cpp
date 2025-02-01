@@ -10,19 +10,22 @@
  * };
  */
 class Solution {
-    TreeNode* flat(TreeNode* root) {
-        if(!root || (!root->left && !root->right)) return root;
-        TreeNode *l=flat(root->left), *r=flat(root->right);
-        if(l) {
-            l->right=root->right;
-            root->right=root->left;
-        }
-        root->left=NULL;
-        return r?r:l;
-    }
-    
 public:
     void flatten(TreeNode* root) {
-        flat(root);
+        if(!root) {
+            return;
+        }
+        flatten(root->right);
+        if(!root->left) {
+            return;
+        }
+        flatten(root->left);
+        TreeNode* tmp = root->left;
+        while(tmp && tmp->right) {
+            tmp = tmp->right;
+        }
+        tmp->right = root->right;
+        root->right = root->left;
+        root->left = NULL;
     }
 };
