@@ -10,19 +10,19 @@
  * };
  */
 class Solution {
-    TreeNode* build(int l, int r, vector<int>& nums) {
-        if(l>r) return NULL;
-        int mid=l+(r-l)/2;
-        TreeNode* t=new TreeNode(nums[mid]);
-        if(l==r) return t;
-        t->left=build(l, mid-1, nums);
-        t->right=build(mid+1, r, nums);
-        return t;
+    TreeNode* construct(int l, int r, vector<int>& nums) {
+        if(l > r) {
+            return NULL;
+        }
+        int m = l + (r - l) / 2;
+        TreeNode* left = construct(l, m - 1, nums);
+        TreeNode* right = construct(m + 1, r, nums);
+        TreeNode* node = new TreeNode(nums[m], left, right);
+        return node;
     }
-    
 public:
     TreeNode* sortedArrayToBST(vector<int>& nums) {
-        int n=nums.size();
-        return build(0, n-1, nums);
+        int n = nums.size();
+        return construct(0, n - 1, nums);
     }
 };
