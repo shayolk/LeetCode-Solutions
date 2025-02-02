@@ -10,24 +10,23 @@
  * };
  */
 class Solution {
-    int ans;
-    
-    void find(TreeNode* root, int& k, bool& done) {
-        if(!root || done) return;
-        find(root->left, k, done);
-        --k;
-        if(k==0) {
-            ans=root->val;
-            done=true;
+    void find(TreeNode* root, int& k, int& ans) {
+        if(!root || ans != -1) {
             return;
         }
-        find(root->right, k, done);
+        find(root->left, k, ans);
+        --k;
+        if(k == 0) {
+            ans = root->val;
+            return;
+        }
+        find(root->right, k, ans);
     }
-    
+
 public:
     int kthSmallest(TreeNode* root, int k) {
-        bool done=false;
-        find(root, k, done);
+        int ans = -1;
+        find(root, k, ans);
         return ans;
     }
 };
