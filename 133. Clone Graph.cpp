@@ -20,27 +20,27 @@ public:
 */
 
 class Solution {
-    map<Node*,Node*> mp;
-    map<Node*,bool> vis;
-    
+    map<Node*,Node*> clone;
+
     void dfs(Node* now) {
-        vis[now]=true;
-        Node* t=new Node(now->val);
-        mp[now]=t;
+        if(!now) {
+            return;
+        }
+        Node* tmp = new Node(now->val);
+        clone[now] = tmp;
         for(Node* neb: now->neighbors) {
-            if(!vis[neb]) {
+            if(!clone.count(neb)) {
                 dfs(neb);
             }
         }
         for(Node* neb: now->neighbors) {
-            t->neighbors.push_back(mp[neb]);
+            tmp->neighbors.push_back(clone[neb]);
         }
     }
-    
+
 public:
     Node* cloneGraph(Node* node) {
-        if(!node) return NULL;
         dfs(node);
-        return mp[node];
+        return clone[node];
     }
 };
