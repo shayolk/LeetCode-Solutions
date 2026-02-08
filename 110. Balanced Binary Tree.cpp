@@ -11,13 +11,16 @@
  */
 class Solution {
     pair<bool,int> find(TreeNode* root) {
-        if(!root) return {true, 0};
-        pair<bool,int> l=find(root->left), r=find(root->right);
-        bool here=l.first && r.first && abs(l.second-r.second)<=1;
-        int depth=1+max(l.second, r.second);
-        return {here, depth};
+        if (!root) {
+            return {true, 0};
+        }
+        pair<bool,int> left = find(root->left);
+        pair<bool,int> right = find(root->right);
+        bool balanced = left.first && right.first && (abs(left.second - right.second) <= 1);
+        int height = 1 + max(left.second, right.second);
+        return {balanced, height};
     }
-    
+
 public:
     bool isBalanced(TreeNode* root) {
         return find(root).first;
